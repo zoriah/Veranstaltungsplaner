@@ -35,11 +35,17 @@ const EventDetails = () =>
     }
 
     return (
-        <div className="">
-            <h1 className="">{event.name}</h1>
-            <p className="">{event.description}</p>
-            <p className="">Datum: {event.date}</p>
-            <p>Ort: {event.location}</p>
+        <div className="p-8 bg-gray-100 min-h-screen">
+            <h1 className="text-3xl font-bold mb-6">{event.name}</h1>
+            <div className="bg-white p-6 rounded shadow">
+                <p className="text-gray-700 mb-4">{event.description}</p>
+                <p className="text-gray-600">
+                    <strong>Datum:</strong> {event.date}
+                </p>
+                <p className="text-gray-600">
+                    <strong>Ort:</strong> {event.location}
+                </p>
+            </div>
         </div>
     );
 };
