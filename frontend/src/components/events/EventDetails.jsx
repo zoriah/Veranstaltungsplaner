@@ -36,8 +36,11 @@ const EventDetails = () =>
 
     return (
         <div className="p-8 bg-gray-100 min-h-screen">
-            <h1 className="text-3xl font-bold mb-6">{event.name}</h1>
+
+            <h1 className="text-3xl font-bold mb-6">{event.title}</h1>
+
             <div className="bg-white p-6 rounded shadow">
+
                 <p className="text-gray-700 mb-4">{event.description}</p>
                 <p className="text-gray-600">
                     <strong>Datum:</strong> {event.date}
@@ -45,7 +48,9 @@ const EventDetails = () =>
                 <p className="text-gray-600">
                     <strong>Ort:</strong> {event.location}
                 </p>
+
             </div>
+
         </div>
     );
 };

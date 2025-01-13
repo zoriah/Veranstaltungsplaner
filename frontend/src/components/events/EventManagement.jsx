@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import {
+import
+{
     getAllEvents,
     getEventById,
     createEvent,
@@ -9,93 +10,135 @@ import {
 } from "../../services/event-service";
 import { useAuth } from "./../../context/AuthProvider";
 
-const EventManagement = () => {
-    const { id } = useAuth
-    const [events, setEvents] = useState([]);
-    const [eventDetails, setEventDetails] = useState(null);
+const EventManagement = () =>
+{
+    const { id } = useAuth(); //* Auth Context
+    const [events, setEvents] = useState([]); //* Alle Events
+    const [eventDetails, setEventDetails] = useState(null); //* Details eines Events
     const [newEvent, setNewEvent] = useState({
         title: "",
         date: "",
         description: "",
         location: "",
-        organizerId: id
+        organizerId: id,
     });
-    const [eventId, setEventId] = useState("");
+    const [eventId, setEventId] = useState(""); //* ID eines spezifischen Events
     const [updatedEvent, setUpdatedEvent] = useState({
         title: "",
         date: "",
         description: "",
         location: "",
     });
-
+    const [deleteEventId, setDeleteEventId] = useState(""); //* ID des zu löschenden Events
+    const [loading, setLoading] = useState(false); //* Ladeanzeige
     const token = localStorage.getItem("token");
 
     //* Alle Events abrufen
-    const fetchEvents = async () => {
-        try {
+    const fetchEvents = async () =>
+    {
+        if (!token)
+        {
+            console.error("Kein Token gefunden. Bitte einloggen.");
+            alert("Bitte einloggen, um Events zu sehen.");
+            return;
+        }
+
+        try
+        {
+            setLoading(true); //* Ladeanzeige starten
+            console.log("Starte API-Aufruf für alle Events...");
             const response = await getAllEvents(token);
-            setEvents(response);
-        } catch (error) {
+            console.log("Erhaltene Events:", response); //? Debugging
+            setEvents(response); //* Events setzen
+        } catch (error)
+        {
             console.error("Fehler beim Abrufen der Events:", error);
+            alert("Fehler beim Abrufen der Events. Siehe Konsole für weitere Details.");
+        } finally
+        {
+            setLoading(false); //* Ladeanzeige stoppen
         }
     };
 
     //* Event nach ID abrufen
-    const handleGetEventById = async () => {
-        try {
+    const handleGetEventById = async () =>
+    {
+        try
+        {
             const response = await getEventById(eventId, token);
             setEventDetails(response);
-        } catch (error) {
+        } catch (error)
+        {
             console.error("Fehler beim Abrufen des Events:", error);
         }
     };
 
     //* Neues Event erstellen
-    const handleCreateEvent = async () => {
-        try {
-            const response = await createEvent(newEvent, token);
+    const handleCreateEvent = async () =>
+    {
+        try
+        {
+            await createEvent(newEvent, token);
             alert("Event erfolgreich erstellt!");
             setNewEvent({ title: "", date: "", description: "", location: "" });
-            fetchEvents(); // Aktualisiere die Liste
-        } catch (error) {
+            fetchEvents(); //* Aktualisiere die Liste
+        } catch (error)
+        {
             console.error("Fehler beim Erstellen eines Events:", error);
         }
     };
 
     //* Event aktualisieren
-    const handleUpdateEvent = async () => {
-        try {
-            const response = await updateEventById(eventId, updatedEvent, token);
+    const handleUpdateEvent = async () =>
+    {
+        try
+        {
+            await updateEventById(eventId, updatedEvent, token);
             alert("Event erfolgreich aktualisiert!");
-            fetchEvents(); // Aktualisiere die Liste
-        } catch (error) {
+            fetchEvents(); //* Aktualisiere die Liste
+        } catch (error)
+        {
             console.error("Fehler beim Aktualisieren des Events:", error);
         }
     };
 
     //* Event löschen
-    const handleDeleteEvent = async () => {
-        try {
-            await deleteEventById(eventId, token);
+    const handleDeleteEvent = async () =>
+    {
+        if (!deleteEventId)
+        {
+            alert("Bitte eine Event-ID eingeben!");
+            return;
+        }
+        try
+        {
+            await deleteEventById(deleteEventId, token);
             alert("Event erfolgreich gelöscht!");
-            fetchEvents();
-        } catch (error) {
+            setDeleteEventId("");
+            fetchEvents(); //* Liste aktualisieren
+        } catch (error)
+        {
             console.error("Fehler beim Löschen des Events:", error);
         }
     };
 
     //* Anstehende Events abrufen
-    const handleGetUpcomingEvents = async () => {
-        try {
+    const handleGetUpcomingEvents = async () =>
+    {
+        try
+        {
             const response = await getUpcomingEvents(token);
             setEvents(response);
-        } catch (error) {
+        } catch (error)
+        {
             console.error("Fehler beim Abrufen der anstehenden Events:", error);
         }
     };
 
-    useEffect(() => {
-        fetchEvents(); // Events beim Laden abrufen
+    //* Events beim Laden abrufen
+    useEffect(() =>
+    {
+        fetchEvents();
     }, []);
 
     return (
@@ -154,19 +197,27 @@ const EventManagement = () => {
                 >
                     Alle Events abrufen
                 </button>
-                <ul className="mt-4 space-y-4">
-                    {events.map((event) => (
-                        <li
-                            key={event.id}
-                            className="border p-4 rounded bg-white shadow flex justify-between items-center"
-                        >
-                            <div>
-                                <strong className="block text-lg">{event.title}</strong>
-                                <span>{event.date}</span>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
+                {loading ? (
+                    <p>Lade Events...</p>
+                ) : events.length === 0 ? (
+                    <p>Keine Events gefunden.</p>
+                ) : (
+                    <ul className="mt-4 space-y-4">
+                        {events > 0 && events.map((event) => (
+                            <li
+                                key={event.id}
+                                className="border p-4 rounded bg-white shadow flex justify-between items-center"
+                            >
+                                <div>
+                                    <strong className="block text-lg">{event.title}</strong>
+                                    <span>{new Date(event.date).toLocaleDateString()}</span>
+                                    <p>{event.description}</p>
+                                    <p>{event.location}</p>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                )}
             </div>
 
             {/* Event nach ID anzeigen */}
@@ -195,72 +246,21 @@ const EventManagement = () => {
                 )}
             </div>
 
-            {/* Event aktualisieren */}
-            <div className="mb-8">
-                <h2 className="text-2xl font-semibold mb-4">Event aktualisieren</h2>
-                <div className="grid gap-4">
-                    <input
-                        type="text"
-                        placeholder="Name"
-                        value={updatedEvent.title}
-                        onChange={(e) =>
-                            setUpdatedEvent({ ...updatedEvent, title: e.target.value })
-                        }
-                        className="border rounded p-2 w-full"
-                    />
-                    <input
-                        type="date"
-                        value={updatedEvent.date}
-                        onChange={(e) =>
-                            setUpdatedEvent({ ...updatedEvent, date: e.target.value })
-                        }
-                        className="border rounded p-2 w-full"
-                    />
-                    <textarea
-                        placeholder="Beschreibung"
-                        value={updatedEvent.description}
-                        onChange={(e) =>
-                            setUpdatedEvent({ ...updatedEvent, description: e.target.value })
-                        }
-                        className="border rounded p-2 w-full"
-                    />
-                    <input
-                        type="text"
-                        placeholder="Ort"
-                        value={updatedEvent.location}
-                        onChange={(e) =>
-                            setUpdatedEvent({ ...updatedEvent, location: e.target.value })
-                        }
-                        className="border rounded p-2 w-full"
-                    />
-                </div>
-                <button
-                    onClick={handleUpdateEvent}
-                    className="mt-4 bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600"
-                >
-                    Event aktualisieren
-                </button>
-            </div>
-
             {/* Event löschen */}
             <div className="mb-8">
                 <h2 className="text-2xl font-semibold mb-4">Event löschen</h2>
+                <input
+                    type="text"
+                    placeholder="Event-ID eingeben"
+                    value={deleteEventId}
+                    onChange={(e) => setDeleteEventId(e.target.value)}
+                    className="border rounded p-2 w-full"
+                />
                 <button
                     onClick={handleDeleteEvent}
-                    className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                    className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
                 >
                     Event löschen
-                </button>
-            </div>
-
-            {/* Anstehende Events anzeigen */}
-            <div>
-                <h2 className="text-2xl font-semibold mb-4">Anstehende Events anzeigen</h2>
-                <button
-                    onClick={handleGetUpcomingEvents}
-                    className="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600"
-                >
-                    Anstehende Events abrufen
                 </button>
             </div>
         </div>
