@@ -78,7 +78,7 @@ const EventManagement = () => {
         try {
             await deleteEventById(eventId, token);
             alert("Event erfolgreich gelöscht!");
-            fetchEvents(); // Aktualisiere die Liste
+            fetchEvents();
         } catch (error) {
             console.error("Fehler beim Löschen des Events:", error);
         }
@@ -99,107 +99,170 @@ const EventManagement = () => {
     }, []);
 
     return (
-        <div className="event-management">
-            <h1>Event Management</h1>
+        <div className="event-management p-8 bg-gray-100 min-h-screen">
+            <h1 className="text-3xl font-bold mb-6">Event Management</h1>
 
             {/* Neues Event erstellen */}
-            <h2>Neues Event erstellen</h2>
-            <input
-                type="text"
-                placeholder="title"
-                value={newEvent.title}
-                onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })}
-            />
-            <input
-                type="date"
-                value={newEvent.date}
-                onChange={(e) => setNewEvent({ ...newEvent, date: e.target.value })}
-            />
-            <textarea
-                placeholder="Beschreibung"
-                value={newEvent.description}
-                onChange={(e) =>
-                    setNewEvent({ ...newEvent, description: e.target.value })
-                }
-            />
-            <input
-                type="text"
-                placeholder="Ort"
-                value={newEvent.location}
-                onChange={(e) => setNewEvent({ ...newEvent, location: e.target.value })}
-            />
-            <button onClick={handleCreateEvent}>Event erstellen</button>
+            <div className="mb-8">
+                <h2 className="text-2xl font-semibold mb-4">Neues Event erstellen</h2>
+                <div className="grid gap-4">
+                    <input
+                        type="text"
+                        placeholder="Name"
+                        value={newEvent.title}
+                        onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })}
+                        className="border rounded p-2 w-full"
+                    />
+                    <input
+                        type="date"
+                        value={newEvent.date}
+                        onChange={(e) => setNewEvent({ ...newEvent, date: e.target.value })}
+                        className="border rounded p-2 w-full"
+                    />
+                    <textarea
+                        placeholder="Beschreibung"
+                        value={newEvent.description}
+                        onChange={(e) =>
+                            setNewEvent({ ...newEvent, description: e.target.value })
+                        }
+                        className="border rounded p-2 w-full"
+                    />
+                    <input
+                        type="text"
+                        placeholder="Ort"
+                        value={newEvent.location}
+                        onChange={(e) =>
+                            setNewEvent({ ...newEvent, location: e.target.value })
+                        }
+                        className="border rounded p-2 w-full"
+                    />
+                </div>
+                <button
+                    onClick={handleCreateEvent}
+                    className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                >
+                    Event erstellen
+                </button>
+            </div>
 
             {/* Alle Events anzeigen */}
-            <h2>Alle Events anzeigen</h2>
-            <button onClick={fetchEvents}>Alle Events abrufen</button>
-            <ul>
-                {events.map((event) => (
-                    <li key={event.id}>
-                        <strong>{event.title}</strong> - {event.date}
-                    </li>
-                ))}
-            </ul>
+            <div className="mb-8">
+                <h2 className="text-2xl font-semibold mb-4">Alle Events anzeigen</h2>
+                <button
+                    onClick={fetchEvents}
+                    className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                >
+                    Alle Events abrufen
+                </button>
+                <ul className="mt-4 space-y-4">
+                    {events.map((event) => (
+                        <li
+                            key={event.id}
+                            className="border p-4 rounded bg-white shadow flex justify-between items-center"
+                        >
+                            <div>
+                                <strong className="block text-lg">{event.title}</strong>
+                                <span>{event.date}</span>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+            </div>
 
             {/* Event nach ID anzeigen */}
-            <h2>Event nach ID anzeigen</h2>
-            <input
-                type="text"
-                placeholder="Event ID"
-                value={eventId}
-                onChange={(e) => setEventId(e.target.value)}
-            />
-            <button onClick={handleGetEventById}>Event abrufen</button>
-            {eventDetails && (
-                <div>
-                    <h3>{eventDetails.title}</h3>
-                    <p>{eventDetails.date}</p>
-                    <p>{eventDetails.description}</p>
-                    <p>{eventDetails.location}</p>
-                </div>
-            )}
+            <div className="mb-8">
+                <h2 className="text-2xl font-semibold mb-4">Event nach ID anzeigen</h2>
+                <input
+                    type="text"
+                    placeholder="Event ID"
+                    value={eventId}
+                    onChange={(e) => setEventId(e.target.value)}
+                    className="border rounded p-2 w-full"
+                />
+                <button
+                    onClick={handleGetEventById}
+                    className="mt-4 bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
+                >
+                    Event abrufen
+                </button>
+                {eventDetails && (
+                    <div className="mt-4 border p-4 rounded bg-white shadow">
+                        <h3 className="text-lg font-semibold">{eventDetails.title}</h3>
+                        <p>{eventDetails.date}</p>
+                        <p>{eventDetails.description}</p>
+                        <p>{eventDetails.location}</p>
+                    </div>
+                )}
+            </div>
 
             {/* Event aktualisieren */}
-            <h2>Event aktualisieren</h2>
-            <input
-                type="text"
-                placeholder="Name"
-                value={updatedEvent.title}
-                onChange={(e) =>
-                    setUpdatedEvent({ ...updatedEvent, title: e.target.value })
-                }
-            />
-            <input
-                type="date"
-                value={updatedEvent.date}
-                onChange={(e) =>
-                    setUpdatedEvent({ ...updatedEvent, date: e.target.value })
-                }
-            />
-            <textarea
-                placeholder="Beschreibung"
-                value={updatedEvent.description}
-                onChange={(e) =>
-                    setUpdatedEvent({ ...updatedEvent, description: e.target.value })
-                }
-            />
-            <input
-                type="text"
-                placeholder="Ort"
-                value={updatedEvent.location}
-                onChange={(e) =>
-                    setUpdatedEvent({ ...updatedEvent, location: e.target.value })
-                }
-            />
-            <button onClick={handleUpdateEvent}>Event aktualisieren</button>
+            <div className="mb-8">
+                <h2 className="text-2xl font-semibold mb-4">Event aktualisieren</h2>
+                <div className="grid gap-4">
+                    <input
+                        type="text"
+                        placeholder="Name"
+                        value={updatedEvent.title}
+                        onChange={(e) =>
+                            setUpdatedEvent({ ...updatedEvent, title: e.target.value })
+                        }
+                        className="border rounded p-2 w-full"
+                    />
+                    <input
+                        type="date"
+                        value={updatedEvent.date}
+                        onChange={(e) =>
+                            setUpdatedEvent({ ...updatedEvent, date: e.target.value })
+                        }
+                        className="border rounded p-2 w-full"
+                    />
+                    <textarea
+                        placeholder="Beschreibung"
+                        value={updatedEvent.description}
+                        onChange={(e) =>
+                            setUpdatedEvent({ ...updatedEvent, description: e.target.value })
+                        }
+                        className="border rounded p-2 w-full"
+                    />
+                    <input
+                        type="text"
+                        placeholder="Ort"
+                        value={updatedEvent.location}
+                        onChange={(e) =>
+                            setUpdatedEvent({ ...updatedEvent, location: e.target.value })
+                        }
+                        className="border rounded p-2 w-full"
+                    />
+                </div>
+                <button
+                    onClick={handleUpdateEvent}
+                    className="mt-4 bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600"
+                >
+                    Event aktualisieren
+                </button>
+            </div>
 
             {/* Event löschen */}
-            <h2>Event löschen</h2>
-            <button onClick={handleDeleteEvent}>Event löschen</button>
+            <div className="mb-8">
+                <h2 className="text-2xl font-semibold mb-4">Event löschen</h2>
+                <button
+                    onClick={handleDeleteEvent}
+                    className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                >
+                    Event löschen
+                </button>
+            </div>
 
             {/* Anstehende Events anzeigen */}
-            <h2>Anstehende Events anzeigen</h2>
-            <button onClick={handleGetUpcomingEvents}>Anstehende Events abrufen</button>
+            <div>
+                <h2 className="text-2xl font-semibold mb-4">Anstehende Events anzeigen</h2>
+                <button
+                    onClick={handleGetUpcomingEvents}
+                    className="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600"
+                >
+                    Anstehende Events abrufen
+                </button>
+            </div>
         </div>
     );
 };

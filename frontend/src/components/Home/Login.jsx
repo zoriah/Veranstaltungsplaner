@@ -17,7 +17,7 @@ const Login = () => {
                 email,
                 password
             })
-            console.log(typeof res.data.token)
+            // console.log(typeof res.data.token)
             login(res.data.token)
             setId(res.data.user.id)
         } catch (error) {
