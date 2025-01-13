@@ -20,6 +20,7 @@ export const AuthProvider = ({ children }) => {
   //Logout
   const logout = () => {
     setIsAuthenticated(false);
+    setId(null)
     localStorage.removeItem('token');
   };
 
@@ -28,4 +29,5 @@ export const AuthProvider = ({ children }) => {
       {children}
     </AuthContext.Provider>
   );
+
 };

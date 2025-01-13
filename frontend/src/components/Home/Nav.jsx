@@ -1,5 +1,5 @@
 import { useAuth } from "../../context/AuthProvider";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 import "./nav.css";
 
@@ -12,13 +12,16 @@ const Nav = () => {
 
     return (
         <>
-            {!isAuthenticated ? (
+            {isAuthenticated ? (
                 <div className="containerNav">
-                    <h1 onClick={handleLoginClick} className="btnEle">Login</h1>
+                    <div className="btnWrap">
+                        <h1 onClick={logout} className="btnEle">Logout</h1>
+                        <Link to="events/manage" className="btnEle">Neues Event </Link>
+                    </div>
                 </div>
             ) : (
                 <div className="containerNav">
-                    <h1 onClick={logout} className="btnEle">Logout</h1>
+                    <h1 onClick={handleLoginClick} className="btnEle">Login</h1>
                 </div>
             )}
         </>

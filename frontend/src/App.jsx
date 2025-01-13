@@ -11,6 +11,7 @@ import RegistrationForm from './components/Home/RegistrationForm';
 const App = () => {
   const { isAuthenticated } = useAuth();
 
+  console.log("NOA", isAuthenticated)
   return (
     <>
       <Routes>
@@ -30,13 +31,17 @@ const App = () => {
           <Route path="eventlist" element={<EventList />} />
 
           {/* Event Details Page Marcel Noa Bahman */}
-          <Route path="events/:id" element={<EventDetails />} />
+          <Route path="events/:id"
+            element={
+              isAuthenticated ? <EventDetails /> : <h2>Access Denied</h2>
+            }
+          />
 
           {/* Event Management Page Marcel Noa Bahman */}
           <Route
             path="events/manage"
             element={
-              !isAuthenticated ? <EventManagement /> : <h2>Access Denied</h2>
+              isAuthenticated ? <EventManagement /> : <h2>Access Denied</h2>
             }
           />
 
