@@ -155,7 +155,7 @@ const EventManagement = () => {
                     Alle Events abrufen
                 </button>
                 <ul className="mt-4 space-y-4">
-                    {events.map((event) => (
+                    {events.length > 0 && events.map((event) => (
                         <li
                             key={event.id}
                             className="border p-4 rounded bg-white shadow flex justify-between items-center"
