@@ -1,0 +1,53 @@
+.topContainerRegistration{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: Roboto;
+    color: #757575;
+}
+
+.registration-form{
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Abstand zwischen den Eingabefeldern */
+    width: 400px; /* Breite des Formulars */
+    border: 5px solid lightblue;
+    border-radius: 10px;
+    padding: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.inputRegistration{
+    padding: 10px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    outline: none;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    font-family: Roboto;
+    color: #757575;
+}
+
+.labelCheckbox{
+    margin-left: .65rem;
+}
+
+input[type="checkbox"]{
+    vertical-align: middle;
+    margin-left: 1rem;  
+}
+
+.btnRegistration{
+    display: block;
+    margin: 0 6rem;
+    padding: 10px;
+    max-width: 200px;
+    background-color: #007bff; /* Blauer Hintergrund */
+    color: white; /* Weiße Schrift */
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;    
+}

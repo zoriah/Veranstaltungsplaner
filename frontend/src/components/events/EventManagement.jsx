@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
-import
-{
+import { useState, useEffect } from "react";
+import {
     getAllEvents,
     getEventById,
     createEvent,
@@ -8,20 +7,22 @@ import
     deleteEventById,
     getUpcomingEvents,
 } from "../../services/event-service";
+import { useAuth } from "./../../context/AuthProvider";
 
-const EventManagement = () =>
-{
+const EventManagement = () => {
+    const { id } = useAuth
     const [events, setEvents] = useState([]);
     const [eventDetails, setEventDetails] = useState(null);
     const [newEvent, setNewEvent] = useState({
-        name: "",
+        title: "",
         date: "",
         description: "",
         location: "",
+        organizerId: id
     });
     const [eventId, setEventId] = useState("");
     const [updatedEvent, setUpdatedEvent] = useState({
-        name: "",
+        title: "",
         date: "",
         description: "",
         location: "",
@@ -30,89 +31,70 @@ const EventManagement = () =>
     const token = localStorage.getItem("token");
 
     //* Alle Events abrufen
-    const fetchEvents = async () =>
-    {
-        try
-        {
+    const fetchEvents = async () => {
+        try {
             const response = await getAllEvents(token);
             setEvents(response);
-        } catch (error)
-        {
+        } catch (error) {
             console.error("Fehler beim Abrufen der Events:", error);
         }
     };
 
     //* Event nach ID abrufen
-    const handleGetEventById = async () =>
-    {
-        try
-        {
+    const handleGetEventById = async () => {
+        try {
             const response = await getEventById(eventId, token);
             setEventDetails(response);
-        } catch (error)
-        {
+        } catch (error) {
             console.error("Fehler beim Abrufen des Events:", error);
         }
     };
 
     //* Neues Event erstellen
-    const handleCreateEvent = async () =>
-    {
-        try
-        {
+    const handleCreateEvent = async () => {
+        try {
             const response = await createEvent(newEvent, token);
             alert("Event erfolgreich erstellt!");
-            setNewEvent({ name: "", date: "", description: "", location: "" });
+            setNewEvent({ title: "", date: "", description: "", location: "" });
             fetchEvents(); // Aktualisiere die Liste
-        } catch (error)
-        {
+        } catch (error) {
             console.error("Fehler beim Erstellen eines Events:", error);
         }
     };
 
     //* Event aktualisieren
-    const handleUpdateEvent = async () =>
-    {
-        try
-        {
+    const handleUpdateEvent = async () => {
+        try {
             const response = await updateEventById(eventId, updatedEvent, token);
             alert("Event erfolgreich aktualisiert!");
             fetchEvents(); // Aktualisiere die Liste
-        } catch (error)
-        {
+        } catch (error) {
             console.error("Fehler beim Aktualisieren des Events:", error);
         }
     };
 
     //* Event löschen
-    const handleDeleteEvent = async () =>
-    {
-        try
-        {
+    const handleDeleteEvent = async () => {
+        try {
             await deleteEventById(eventId, token);
             alert("Event erfolgreich gelöscht!");
             fetchEvents(); // Aktualisiere die Liste
-        } catch (error)
-        {
+        } catch (error) {
             console.error("Fehler beim Löschen des Events:", error);
         }
     };
 
     //* Anstehende Events abrufen
-    const handleGetUpcomingEvents = async () =>
-    {
-        try
-        {
+    const handleGetUpcomingEvents = async () => {
+        try {
             const response = await getUpcomingEvents(token);
             setEvents(response);
-        } catch (error)
-        {
+        } catch (error) {
             console.error("Fehler beim Abrufen der anstehenden Events:", error);
         }
     };
 
-    useEffect(() =>
-    {
+    useEffect(() => {
         fetchEvents(); // Events beim Laden abrufen
     }, []);
 
@@ -124,9 +106,9 @@ const EventManagement = () =>
             <h2>Neues Event erstellen</h2>
             <input
                 type="text"
-                placeholder="Name"
-                value={newEvent.name}
-                onChange={(e) => setNewEvent({ ...newEvent, name: e.target.value })}
+                placeholder="title"
+                value={newEvent.title}
+                onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })}
             />
             <input
                 type="date"
@@ -154,7 +136,7 @@ const EventManagement = () =>
             <ul>
                 {events.map((event) => (
                     <li key={event.id}>
-                        <strong>{event.name}</strong> - {event.date}
+                        <strong>{event.title}</strong> - {event.date}
                     </li>
                 ))}
             </ul>
@@ -170,7 +152,7 @@ const EventManagement = () =>
             <button onClick={handleGetEventById}>Event abrufen</button>
             {eventDetails && (
                 <div>
-                    <h3>{eventDetails.name}</h3>
+                    <h3>{eventDetails.title}</h3>
                     <p>{eventDetails.date}</p>
                     <p>{eventDetails.description}</p>
                     <p>{eventDetails.location}</p>
@@ -182,9 +164,9 @@ const EventManagement = () =>
             <input
                 type="text"
                 placeholder="Name"
-                value={updatedEvent.name}
+                value={updatedEvent.title}
                 onChange={(e) =>
-                    setUpdatedEvent({ ...updatedEvent, name: e.target.value })
+                    setUpdatedEvent({ ...updatedEvent, title: e.target.value })
                 }
             />
             <input
