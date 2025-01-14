@@ -1,0 +1,60 @@
+.containerLogin{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;    
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Abstand zwischen den Eingabefeldern */
+    width: 300px; /* Breite des Formulars */
+    border: 5px solid lightblue;
+    border-radius: 10px;
+    padding: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.loginInput {
+    padding: 10px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    outline: none;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+}
+
+.login-button {
+    padding: 10px;
+    background-color: #007bff; /* Blauer Hintergrund */
+    color: white; /* Weiße Schrift */
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.login-button:hover {
+    background-color: #0056b3; /* Dunklerer Blauton beim Hover */
+}
+
+.register{
+    font-family: Roboto;
+    color:rgb(150, 150, 150)
+}
+
+.register-info{
+    font-family: Roboto;
+}
+
+.register-link{
+    color:rgb(0, 0, 140);
+    cursor: pointer;
+}
+
+.register-link:hover{
+    color: rgb(0, 0, 255);
+}
+

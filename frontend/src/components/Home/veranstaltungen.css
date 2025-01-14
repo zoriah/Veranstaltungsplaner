@@ -1,0 +1,38 @@
+.container{
+    display: flex;
+    justify-content: center; /* Zentriert den gesamten Container horizontal */
+    align-items: flex-start; /* Startet die Karten am oberen Rand */
+    flex-wrap: wrap; /* Ermöglicht das Umbrechen der Karten in eine neue Zeile */
+    gap: 16px; /* Abstand zwischen den Karten */
+    max-width: 1600px; /* Maximale Breite des Containers */
+    margin: 0 auto; /* Zentriert den Container auf der Seite */
+    padding: 16px;    
+}
+
+.card {
+    
+    max-width: 300px; /* Maximale Breite der Karten */
+    background-color: #f0f0f0;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+.pic{
+    width: 300px;
+    /* display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row; */
+    /* width: 400; */
+    /* max-width: 400px;
+    min-width: 300px; */
+}
+
+.title{
+    font-family: Roboto,sans-serif;
+    font-size: 18px;
+}
+
+.start{
+    font-family: Roboto,sans-serif;
+    font-size: 16px;
+}
